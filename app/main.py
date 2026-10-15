@@ -1,9 +1,10 @@
 from typing import Union
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from pydantic import BaseModel
 
 from app.bigram_model import BigramModel
+from app.classifier import ImageClassifier
 from app.embedding_model import EmbeddingModel
 
 app = FastAPI()
@@ -20,6 +21,9 @@ bigram_model = BigramModel(corpus)
 
 # spaCy word embedding model (loaded once at startup)
 embedding_model = EmbeddingModel()
+
+# CNN image classifier trained on CIFAR10 (loaded once at startup)
+image_classifier = ImageClassifier()
 
 
 class TextGenerationRequest(BaseModel):
@@ -49,3 +53,16 @@ def embed_word(request: EmbeddingRequest):
         return embedding_model.get_embedding(request.word)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post("/classify")
+async def classify_image(file: UploadFile = File(...)):
+    """Classify an uploaded image with the CIFAR10 CNN.
+
+    Returns the predicted class id, class name and confidence.
+    """
+    try:
+        image_bytes = await file.read()
+        return image_classifier.predict(image_bytes)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f'Could not classify image: {e}')
