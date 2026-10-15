@@ -1,11 +1,15 @@
 [project]
 name = "sps-genai"
 version = "0.1.0"
-description = "Simple bigram text generator + spaCy word embedding API (Module 3 class activity + Assignment 1)"
+description = "Simple bigram text generator + spaCy word embedding API + CNN image classifier (Module 3/4 class activities + Assignments 1 & 2)"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi",
     "uvicorn",
     "spacy",
+    "torch",
+    "torchvision",
+    "pillow",
+    "python-multipart",
 ]

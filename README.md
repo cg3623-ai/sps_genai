@@ -1,7 +1,8 @@
 # sps_genai
 
 Simple text generation FastAPI project (Module 3 class activity), extended with
-a spaCy word embedding endpoint for Assignment 1.
+a spaCy word embedding endpoint for Assignment 1 and a CNN image classifier
+endpoint for Assignment 2.
 
 ## Setup
 
@@ -26,6 +27,9 @@ Open http://127.0.0.1:8000/docs for the interactive API docs.
 - `GET /` — health check
 - `POST /generate` — bigram text generation, body: `{"start_word": "the", "length": 20}`
 - `POST /embed` — spaCy word embedding, body: `{"word": "king"}`
+- `POST /classify` — CNN image classification (CIFAR10, 10 classes). Upload an
+  image file; returns `{"predicted_class": 3, "class_name": "cat", "confidence": 0.87}`.
+  Train the model first: `uv run python train_cifar10.py` (saves `app/cifar10_cnn.pt`).
 
 ## Docker (optional)
 
