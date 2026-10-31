@@ -1,8 +1,8 @@
 # sps_genai
 
 Simple text generation FastAPI project (Module 3 class activity), extended with
-a spaCy word embedding endpoint for Assignment 1 and a CNN image classifier
-endpoint for Assignment 2.
+a spaCy word embedding endpoint for Assignment 1, a CNN image classifier
+endpoint for Assignment 2, and a GAN digit generator endpoint for Assignment 3.
 
 ## Setup
 
@@ -30,6 +30,10 @@ Open http://127.0.0.1:8000/docs for the interactive API docs.
 - `POST /classify` — CNN image classification (CIFAR10, 10 classes). Upload an
   image file; returns `{"predicted_class": 3, "class_name": "cat", "confidence": 0.87}`.
   Train the model first: `uv run python train_cifar10.py` (saves `app/cifar10_cnn.pt`).
+- `POST /generate-image` — GAN handwritten digit generation (MNIST). Body:
+  `{"seed": 42}` (seed is optional). Returns a base64-encoded 28x28 PNG in
+  `{"image_base64": "...", "seed": 42, "format": "png", "size": "28x28"}`.
+  Train the model first: `uv run python train_gan.py` (saves `app/mnist_gan.pt`).
 
 ## Docker (optional)
 
