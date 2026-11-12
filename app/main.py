@@ -5,6 +5,8 @@ from pydantic import BaseModel
 
 from app.bigram_model import BigramModel
 from app.classifier import ImageClassifier
+from app.diffusion_generator import DiffusionGenerator
+from app.ebm_generator import EBMGenerator
 from app.embedding_model import EmbeddingModel
 from app.generator import DigitGenerator
 
@@ -24,6 +26,10 @@ embedding_model = EmbeddingModel()
 image_classifier = ImageClassifier()
 
 digit_generator = DigitGenerator()
+
+diffusion_generator = DiffusionGenerator()
+
+ebm_generator = EBMGenerator()
 
 
 class TextGenerationRequest(BaseModel):
@@ -71,5 +77,21 @@ async def classify_image(file: UploadFile = File(...)):
 def generate_image(request: GenerateImageRequest):
     try:
         return digit_generator.generate(request.seed)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f'Could not generate image: {e}')
+
+
+@app.post("/generate-diffusion")
+def generate_diffusion(request: GenerateImageRequest):
+    try:
+        return diffusion_generator.generate(request.seed)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f'Could not generate image: {e}')
+
+
+@app.post("/generate-ebm")
+def generate_ebm(request: GenerateImageRequest):
+    try:
+        return ebm_generator.generate(request.seed)
     except Exception as e:
         raise HTTPException(status_code=400, detail=f'Could not generate image: {e}')
